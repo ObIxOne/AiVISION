@@ -1,394 +1,948 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casino Analyst | Best Offers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI-Scanner | Smart Win Finder</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Подключаем чистый мобильный шрифт -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
     <style>
-        /* Сброс стилей */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
         body {
-            background-color: #0f172a;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 70%);
-        }
-
-        .container {
-            width: 100%;
-            max-width: 420px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 30px 20px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
-            position: relative;
-            overflow: hidden;
-            transition: height 0.3s ease;
-        }
-
-        /* Эффект свечения (Золотой) */
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 5px;
-            background: #f59e0b;
-            box-shadow: 0 0 20px 5px #f59e0b;
-            border-radius: 0 0 10px 10px;
-        }
-
-        .logo-box {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.3);
-            font-size: 40px;
-        }
-
-        h1 {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
-        p {
-            color: #94a3b8;
-            font-size: 15px;
-            line-height: 1.5;
-            margin-bottom: 25px;
-        }
-
-        /* AI Section */
-        .ai-section {
-            margin-bottom: 10px;
-        }
-
-        .ai-btn {
-            background: linear-gradient(90deg, #8b5cf6, #d946ef);
-            color: white;
-            border: none;
-            padding: 14px 20px;
-            border-radius: 16px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
-            transition: 0.2s;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
-        .ai-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(139, 92, 246, 0.4);
-        }
-
-        .ai-output-box {
-            background: #1e293b;
-            color: #e2e8f0;
-            font-family: monospace;
-            font-size: 14px;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: left;
-            border: 1px solid #334155;
-            min-height: 0;
-            height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: all 0.5s ease;
-            position: relative;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #05070f; /* Глубокий премиальный темный фон */
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
         }
         
-        .ai-output-box.visible {
-            height: auto;
-            min-height: 80px;
-            opacity: 1;
-            margin-bottom: 20px;
-            border-color: #f59e0b; /* Золотая рамка при успехе */
+        /* Сетка на заднем фоне */
+        .bg-grid-tech {
+            background-size: 30px 30px;
+            background-image: 
+                linear-gradient(to right, rgba(16, 185, 129, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(16, 185, 129, 0.02) 1px, transparent 1px);
         }
 
-        .typing-cursor::after {
-            content: '|';
-            animation: blink 1s infinite;
+        /* Анимация пульсации зеленой точки активности */
+        @keyframes pulse-emerald {
+            0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 10px rgba(16, 185, 129, 0.8); }
+            50% { transform: scale(1.25); opacity: 0.5; box-shadow: 0 0 4px rgba(16, 185, 129, 0.2); }
+        }
+        .active-pulse-dot {
+            animation: pulse-emerald 2s infinite ease-in-out;
         }
 
-        /* Скрытый блок с кнопкой регистрации */
-        #hidden-offer-container {
-            display: none;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* Мягкие размытые неоновые сферы */
+        .blur-neon-green {
+            filter: blur(80px);
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, transparent 75%);
+        }
+        .blur-neon-blue {
+            filter: blur(80px);
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 75%);
         }
 
-        #hidden-offer-container.show {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
+        /* Убираем стандартные стрелки у селектора для более чистого вида */
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='14' viewBox='0 0 24 24' width='14' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            padding-right: 24px !important;
         }
-
-        /* Основная кнопка */
-        .btn {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 16px;
-            font-weight: 800;
-            font-size: 18px;
-            box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.3), 0 0 20px rgba(16, 185, 129, 0.6);
-            transition: transform 0.1s;
-            border: none;
-            cursor: pointer;
-            text-transform: uppercase;
-            animation: pulse-btn 2s infinite;
-        }
-
-        .btn:active {
-            transform: scale(0.96);
-        }
-
-        @keyframes pulse-btn {
-            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
-
-        .footer {
-            margin-top: 30px;
-            font-size: 11px;
-            color: #475569;
-        }
-
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 </head>
-<body>
+<body class="bg-grid-tech text-slate-100 min-h-screen relative flex flex-col justify-between antialiased">
 
-    <div class="container">
-        <div class="card">
-            <div class="logo-box">💎</div>
+    <!-- Декоративный неоновый свет -->
+    <div class="absolute top-10 left-[-20%] w-[80%] h-[250px] blur-neon-blue pointer-events-none z-0"></div>
+    <div class="absolute bottom-20 right-[-20%] w-[80%] h-[250px] blur-neon-green pointer-events-none z-0"></div>
 
-            <h1 data-i18n="title">GAME PREDICTOR AI</h1>
-            
-            <p data-i18n="desc">
-                Our AI tracks platforms where players have been losing for 24+ hours. The payout cycle is inevitable.
-            </p>
+    <!-- Верхняя панель и переключатель языков -->
+    <header class="w-full max-w-md mx-auto px-4 pt-4 pb-2 z-10 flex items-center justify-between border-b border-slate-900/60 bg-slate-950/40 backdrop-blur-md">
+        <div class="flex items-center space-x-2">
+            <span class="w-2 h-2 bg-emerald-500 rounded-full active-pulse-dot"></span>
+            <span class="font-bold text-[11px] tracking-wider text-emerald-400 font-mono" id="header-logo-text">AI SCANNER v6.0</span>
+        </div>
+        
+        <!-- Селектор языков -->
+        <div class="relative">
+            <select id="lang-selector" class="bg-slate-900/90 border border-slate-800 text-slate-200 text-xs font-semibold px-2.5 py-1 rounded-lg focus:outline-none focus:border-emerald-500 transition">
+                <option value="en">🇺🇸 EN</option>
+                <option value="ru">🇷🇺 RU</option>
+                <option value="uk">🇺🇦 UA</option>
+                <option value="de">🇩🇪 DE</option>
+                <option value="fr">🇫🇷 FR</option>
+                <option value="it">🇮🇹 IT</option>
+                <option value="es">🇪🇸 ES</option>
+                <option value="pt">🇵🇹 PT</option>
+                <option value="pl">🇵🇱 PL</option>
+                <option value="ro">🇷🇴 RO</option>
+                <option value="cs">🇨🇿 CZ</option>
+                <option value="sk">🇸🇰 SK</option>
+                <option value="hu">🇭🇺 HU</option>
+                <option value="el">🇬🇷 EL</option>
+                <option value="hr">🇭🇷 HR</option>
+                <option value="sr">🇷🇸 SR</option>
+                <option value="ar">🇦🇪 AR</option>
+            </select>
+        </div>
+    </header>
 
-            <!-- Секция AI -->
-            <div class="ai-section">
-                <button class="ai-btn" onclick="scanWithAI(this)">
-                    🤖 <span data-i18n="ai_btn">USE ANALYSIS</span>
-                </button>
-                <div id="ai-output" class="ai-output-box"></div>
+    <!-- Основной интерактивный блок -->
+    <main class="w-full max-w-md mx-auto px-4 py-6 flex-grow flex flex-col justify-center z-10">
+        
+        <!-- ЭКРАН 1: ПРОСТОЙ СТАРТ -->
+        <div id="screen-intro" class="space-y-6 transition-all duration-300 transform scale-100">
+            <div class="text-center space-y-3">
+                <div class="inline-flex p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+                    <span class="text-3xl">🤖</span>
+                </div>
+                
+                <h1 data-i18n="title" class="text-2xl font-extrabold tracking-tight text-white leading-snug">
+                    Используй ИИ на максимум, используя его вычислительные способности для анализа наилучшего предложения
+                </h1>
+                
+                <p data-i18n="desc" class="text-sm text-slate-400 max-w-xs mx-auto leading-relaxed">
+                    Наш умный алгоритм сканирует активные казино в реальном времени. Он находит платформы с самой высокой отдачей и лучшими бонусами под ваше расположение.
+                </p>
             </div>
 
-            <!-- Скрытая секция с кнопкой регистрации (Всплывает ПОТОМ) -->
-            <div id="hidden-offer-container">
-                <button class="btn" onclick="handleRedirect()">
-                    <span data-i18n="cta_btn">CLAIM PAYOUT NOW</span>
-                </button>
-                <div style="margin-top: 10px; font-size: 11px; color: #cbd5e1;">
-                    <span data-i18n="timer_text">Opportunity valid for:</span> <span id="countdown" style="color:#f59e0b; font-weight:bold;">05:00</span>
+            <!-- Микро-информация о сканировании -->
+            <div class="bg-slate-900/40 border border-slate-800/80 rounded-xl p-3 flex justify-between text-xs font-mono text-slate-400">
+                <div>
+                    <span class="block text-[10px] text-slate-500 uppercase" id="stat-info-title-1">Провайдеры</span>
+                    <span class="font-bold text-slate-300">14 Active</span>
+                </div>
+                <div class="text-right">
+                    <span class="block text-[10px] text-slate-500 uppercase" id="stat-info-title-2">Шанс отдачи</span>
+                    <span class="font-bold text-emerald-400">RTP 98.4% Max</span>
                 </div>
             </div>
 
+            <!-- Кнопка запуска поиска -->
+            <button id="btn-start" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-extrabold py-4 px-6 rounded-2xl transition duration-150 text-base tracking-wide uppercase shadow-[0_0_20px_rgba(16,185,129,0.25)]">
+                <span data-i18n="btnStart">ЗАПУСТИТЬ ПОИСК ИИ</span>
+            </button>
         </div>
 
-        <div class="footer" data-i18n="footer">
-            Powered by Gemini Neural Network • v.4.2
+        <!-- ЭКРАН 2: ПРОСТОЕ СКАНИРОВАНИЕ (Изначально скрыт) -->
+        <div id="screen-scanning" class="hidden space-y-6 transition-all duration-300 transform scale-95 opacity-0">
+            <div class="space-y-4 text-center">
+                <!-- Простой круговой прогресс -->
+                <div class="relative w-24 h-24 mx-auto flex items-center justify-center">
+                    <div class="absolute inset-0 rounded-full border-4 border-slate-900"></div>
+                    <div class="absolute inset-0 rounded-full border-4 border-t-emerald-500 border-r-emerald-500/30 border-b-transparent border-l-transparent animate-spin"></div>
+                    <span id="scan-percentage" class="font-mono text-2xl font-bold text-emerald-400">0%</span>
+                </div>
+                
+                <div class="space-y-1">
+                    <h2 data-i18n="scanningTitle" class="text-lg font-bold text-white">Идет поиск...</h2>
+                    <p data-i18n="scanningSub" class="text-xs text-slate-400">Ищем платформу с максимальным шансом на выигрыш</p>
+                </div>
+            </div>
+
+            <!-- Шкала прогресса -->
+            <div class="w-full bg-slate-900 border border-slate-800 rounded-full h-3 overflow-hidden p-0.5">
+                <div id="progress-bar" class="bg-emerald-500 h-full rounded-full transition-all duration-100 w-0"></div>
+            </div>
+
+            <!-- Облегченные текстовые логи -->
+            <div class="bg-slate-950/80 border border-slate-900 rounded-xl p-4 font-mono text-xs text-slate-400 min-h-[120px] flex flex-col justify-end space-y-2.5">
+                <div id="log-line-1" class="text-slate-600"></div>
+                <div id="log-line-2" class="text-slate-500"></div>
+                <div id="log-line-3" class="text-emerald-400 font-bold"></div>
+            </div>
         </div>
-    </div>
+
+        <!-- ЭКРАН 3: РЕЗУЛЬТАТ (Изначально скрыт) -->
+        <div id="screen-result" class="hidden space-y-6 transition-all duration-300 transform scale-95 opacity-0">
+            <div class="text-center space-y-1">
+                <span data-i18n="resultBadge" class="inline-block px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
+                    ВАРИАНТ НАЙДЕН
+                </span>
+                <h2 data-i18n="resultTitle" class="text-xl font-extrabold text-white">Подходящий клуб найден!</h2>
+            </div>
+
+            <!-- Карточка Платформы -->
+            <div class="bg-gradient-to-b from-slate-900/60 to-slate-950/80 border border-slate-800/80 rounded-2xl p-5 space-y-4 shadow-lg">
+                <div class="flex items-center space-x-3 pb-3 border-b border-slate-900">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-xl">
+                        🍀
+                    </div>
+                    <div>
+                        <h3 data-i18n="platformTitle" class="font-bold text-base text-white">Лицензированный Клуб</h3>
+                        <p data-i18n="platformStatus" class="text-xs text-emerald-400 font-semibold">Активный цикл выигрышей</p>
+                    </div>
+                </div>
+
+                <!-- Основные показатели -->
+                <div class="grid grid-cols-2 gap-3 py-1 text-xs">
+                    <div>
+                        <span data-i18n="stat1Label" class="text-slate-500 font-medium block">Шанс победы:</span>
+                        <span data-i18n="stat1Val" class="font-bold text-emerald-400 text-sm">98.2% (Очень высокий)</span>
+                    </div>
+                    <div>
+                        <span data-i18n="stat2Label" class="text-slate-500 font-medium block">Ваш бонус:</span>
+                        <span data-i18n="stat2Val" class="font-bold text-emerald-400 text-sm">+250 FS + 150%</span>
+                    </div>
+                </div>
+
+                <!-- Простой таймер упущенного времени -->
+                <div class="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 flex items-center justify-between text-xs text-amber-400">
+                    <span data-i18n="timerLabel" class="font-medium">Время действия бонуса:</span>
+                    <span id="countdown-timer" class="font-mono font-bold text-sm bg-slate-950/40 px-2 py-0.5 rounded border border-amber-500/20">14:59</span>
+                </div>
+            </div>
+
+            <!-- Финальная кнопка перехода -->
+            <a id="cta-link" href="#" class="block w-full text-center bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-extrabold py-4 px-6 rounded-2xl transition duration-150 text-base tracking-wider uppercase shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                <span data-i18n="btnCta">ЗАБРАТЬ БОНУС И ИГРАТЬ →</span>
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Нижний блок с живыми выигрышами в реальном времени -->
+    <footer class="w-full max-w-md mx-auto px-4 pb-6 pt-2 z-10 border-t border-slate-900/60 bg-slate-950/20 backdrop-blur-md">
+        <div class="bg-slate-900/40 border border-slate-800/80 rounded-xl p-3">
+            <div class="flex items-center justify-between mb-2">
+                <span id="live-wins-header" class="text-[10px] font-mono text-slate-500 flex items-center uppercase tracking-wide">
+                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-1.5 active-pulse-dot"></span>
+                    ЖИВЫЕ ВЫИГРЫШИ РЯДОМ С ВАМИ
+                </span>
+            </div>
+            
+            <div id="live-wins-container" class="space-y-1.5 max-h-[60px] overflow-hidden">
+                <!-- Сюда динамически добавляются строки -->
+            </div>
+        </div>
+    </footer>
 
     <script>
-        // --- CONFIGURATION (НАСТРОЙКИ) ---
-        const OFFER_LINK = "https://eastrk-dt.com/s?a=241617&sm=42728&co=299963&mt=26&s1=e2&s2=E1"; // ТВОЯ ССЫЛКА
-        const apiKey = "AIzaSyBFXdCi6FfCdZsQh2PijgzvScww6wXk9pI"; // ТВОЙ GEMINI API KEY
+        // ==========================================
+        // НАСТРОЙКА: Ссылка для перехода
+        // ==========================================
+        const TARGET_URL = "https://obixone.github.io/BONNOW/BONNOW.html"; // Вставьте сюда вашу ссылку
 
-        // --- LOCALIZATION (ПЕРЕВОДЫ) ---
-        const translations = {
+        // Блок переводов для стран
+        const TRANSLATIONS = {
             en: {
-                title: "GAME PREDICTOR AI",
-                desc: "Our AI tracks platforms where players have been losing for 24+ hours. The payout cycle is inevitable.",
-                ai_btn: "USE ANALYSIS",
-                cta_btn: "ACCESS PLATFORM",
-                timer_text: "Opportunity valid for:",
-                footer: "Powered by Gemini Neural Network • v.4.2",
-                // Промпт: Универсальный текст, без названия платформы
-                ai_prompt: "You are a Casino Analyst. Briefly (max 25 words) in ENGLISH say: 'High probability of big win found on one platform due to long player losing streaks. Link generated. Platform access below'.",
-                ai_thinking: "Analyzing player loss data...",
-                redirecting: "ACCESSING PLATFORM..."
+                title: "Maximize AI potential. Use its computing power to analyze the best offer",
+                desc: "Our smart algorithm scans active casinos in real-time. It finds platforms with the highest win-rate (RTP) and best starting bonuses.",
+                btnStart: "START AI SEARCH",
+                scanningTitle: "Scanning servers...",
+                scanningSub: "Searching for the highest win rate, please wait...",
+                log1: "Detecting location...",
+                log2: "Checking active payout rates...",
+                log3: "Searching for exclusive bonuses...",
+                log4: "Best match found! Connecting...",
+                resultBadge: "MATCH FOUND",
+                resultTitle: "Best Platform Selected!",
+                platformTitle: "Licensed Club",
+                platformStatus: "Active winning cycle",
+                stat1Label: "Win Chance:",
+                stat1Val: "98.2% (Very High)",
+                stat2Label: "Your Bonus:",
+                stat2Val: "+250 FS + 150%",
+                timerLabel: "Bonus expires in:",
+                btnCta: "CLAIM BONUS & PLAY →",
+                footerLabel: "LIVE WINS REGISTRATION",
+                wonIn: "won in",
+                currency: "$",
+                prefix: true
             },
             ru: {
-                title: "AI ПРЕДИКТОР",
-                desc: "Алгоритм ищет платформы с 'перегретым' пулом, где игроки сливали бюджет последние 24 часа.",
-                ai_btn: "ИСПОЛЬЗОВАТЬ АНАЛИЗ",
-                cta_btn: "ПЕРЕЙТИ НА ПЛАТФОРМУ",
-                timer_text: "Окно возврата открыто:",
-                footer: "Powered by Gemini Neural Network • v.4.2",
-                // Промпт на русском: Универсальный текст, как просили
-                ai_prompt: "Ты аналитик казино. Коротко (до 25 слов) на РУССКОМ скажи: 'Найдена высокая вероятность на одной из платформ забрать высокий выигрыш в связи с длительными проигрышами игроков. Ссылка сформирована. Платформа по кнопке ниже'.",
-                ai_thinking: "Анализ истории проигрышей...",
-                redirecting: "ПЕРЕХОД НА ПЛАТФОРМУ..."
+                title: "Используй ИИ на максимум, используя его вычислительные способности для анализа наилучшего предложения",
+                desc: "Наш умный алгоритм сканирует активные казино в реальном времени. Он находит платформы с самой высокой отдачей и лучшими бонусами.",
+                btnStart: "ЗАПУСТИТЬ ПОИСК ИИ",
+                scanningTitle: "Сканирование серверов...",
+                scanningSub: "Ищем платформу с максимальной отдачей...",
+                log1: "Определение локации...",
+                log2: "Проверка активности выплат на серверах...",
+                log3: "Поиск приветственных бонусов...",
+                log4: "Платформа найдена! Подключаем...",
+                resultBadge: "ВАРИАНТ НАЙДЕН",
+                resultTitle: "Платформа успешно выбрана!",
+                platformTitle: "Лицензированный Клуб",
+                platformStatus: "Активный цикл выигрышей",
+                stat1Label: "Шанс победы:",
+                stat1Val: "98.2% (Очень высокий)",
+                stat2Label: "Ваш бонус:",
+                stat2Val: "+250 FS + 150%",
+                timerLabel: "Срок действия бонуса:",
+                btnCta: "ЗАБРАТЬ БОНУС И ИГРАТЬ →",
+                footerLabel: "ЖИВЫЕ ВЫИГРЫШИ РЯДОМ С ВАМИ",
+                wonIn: "выиграл в",
+                currency: "₽",
+                prefix: false
+            },
+            uk: {
+                title: "Використовуй ШІ на максимум, використовуючи його обчислювальні можливості для аналізу найкращої пропозиції",
+                desc: "Наш розумний алгоритм сканує активні казино в реальному часі. Він знаходить платформи з найвищою віддачею та найкращими бонусами.",
+                btnStart: "ЗАПУСТИТИ ПОШУК ШІ",
+                scanningTitle: "Сканування серверів...",
+                scanningSub: "Шукаємо платформу з максимальною віддачею...",
+                log1: "Визначення локації...",
+                log2: "Перевірка активності виплат на серверах...",
+                log3: "Пошук вітальних бонусів...",
+                log4: "Платформа знайдена! Підключаємо...",
+                resultBadge: "ВАРІАНТ ЗНАЙДЕНО",
+                resultTitle: "Платформу успішно обрано!",
+                platformTitle: "Ліцензований Клуб",
+                platformStatus: "Активний цикл виграшів",
+                stat1Label: "Шанс перемоги:",
+                stat1Val: "98.2% (Дуже високий)",
+                stat2Label: "Ваш бонус:",
+                stat2Val: "+250 FS + 150%",
+                timerLabel: "Термін дії бонусу:",
+                btnCta: "ЗАБРАТИ БОНУС ТА ГРАТИ →",
+                footerLabel: "ЖИВІ ВИГРАШІ ПОРУЧ З ВАМИ",
+                wonIn: "виграв у",
+                currency: "₴",
+                prefix: false
+            },
+            de: {
+                title: "Nutzen Sie KI maximal, um die beste Option mit modernster Rechenleistung zu analysieren",
+                desc: "Unser smarter Algorithmus scannt aktive Casinos in Echtzeit. Er findet Plattformen mit der höchsten Gewinnrate und den besten Boni.",
+                btnStart: "KI-SUCHE STARTEN",
+                scanningTitle: "Server werden gescannt...",
+                scanningSub: "Suche nach der höchsten Gewinnrate, bitte warten...",
+                log1: "Standort wird ermittelt...",
+                log2: "Aktive Auszahlungsraten werden geprüft...",
+                log3: "Suche nach exklusiven Boni...",
+                log4: "Beste Option gefunden! Verbindung wird hergestellt...",
+                resultBadge: "TREFFER GEFUNDEN",
+                resultTitle: "Beste Plattform ausgewählt!",
+                platformTitle: "Lizenzierter Club",
+                platformStatus: "Aktiver Gewinnzyklus",
+                stat1Label: "Gewinnchance:",
+                stat1Val: "98.2% (Sehr hoch)",
+                stat2Label: "Dein Bonus:",
+                stat2Val: "+250 FS + 150%",
+                timerLabel: "Dein Bonus läuft ab in:",
+                btnCta: "BONUS SICHERN & SPIELEN →",
+                footerLabel: "LIVE-GEWINNE IN IHRER NÄHE",
+                wonIn: "gewann in",
+                currency: "€",
+                prefix: false
+            },
+            it: {
+                title: "Sfrutta al massimo l'IA, utilizzando la sua potenza di calcolo per analizzare la migliore offerta",
+                desc: "Il nostro algoritmo intelligente scansiona i casinò attivi in tempo reale. Trova le piattaforme con la vincita più alta e i migliori bonus.",
+                btnStart: "AVVIA RICERCA AI",
+                scanningTitle: "Scansione dei server...",
+                scanningSub: "Ricerca della vincita più alta, attendere...",
+                log1: "Rilevamento della posizione...",
+                log2: "Verifica delle vincite attive...",
+                log3: "Ricerca di bonus esclusivi...",
+                log4: "Miglior opzione trovata! Connessione...",
+                resultBadge: "RISULTATO TROVATO",
+                resultTitle: "Migliore piattaforma selezionata!",
+                platformTitle: "Club Licenziato",
+                platformStatus: "Ciclo di vincite attivo",
+                stat1Label: "Probabilità di vincita:",
+                stat1Val: "98.2% (Molto alta)",
+                stat2Label: "Il tuo bonus:",
+                stat2Val: "+250 FS + 150%",
+                timerLabel: "Il tuo bonus scade tra:",
+                btnCta: "RISCATTA IL BONUS & GIOCA →",
+                footerLabel: "VINCITE LIVE VICINO A TE",
+                wonIn: "ha vinto a",
+                currency: "€",
+                prefix: false
             },
             es: {
-                title: "PREDICTOR DE JUEGOS IA",
-                desc: "Nuestra IA rastrea plataformas donde los jugadores han perdido mucho. El ciclo de pago es inminente.",
-                ai_btn: "USAR ANÁLISIS",
-                cta_btn: "ACCEDER A LA PLATAFORMA",
-                timer_text: "Oportunidad válida por:",
-                footer: "Powered by Gemini Neural Network • v.4.2",
-                ai_prompt: "Eres analista. Brevemente (máx 25 palabras) en ESPAÑOL di: 'Alta probabilidad de ganar en una plataforma detectada debido a rachas de pérdidas. Enlace generado. Acceda mediante el botón de abajo'.",
-                ai_thinking: "Analizando pérdidas...",
-                redirecting: "ACCEDIENDO..."
+                title: "Maximiza el uso de la IA aprovechando su potencia de cálculo para analizar la mejor oferta",
+                desc: "Nuestro algoritmo inteligente escanea casinos activos en tiempo real. Encuentra plataformas con la tasa de ganancia más alta y los mejores bonos.",
+                btnStart: "INICIAR BÚSQUEDA IA",
+                scanningTitle: "Escaneando servidores...",
+                scanningSub: "Buscando la tasa de ganancia más alta, espera...",
+                log1: "Detectando ubicación...",
+                log2: "Comprobando pagos activos...",
+                log3: "Buscando bonos exclusivos...",
+                log4: "¡Mejor opción encontrada! Conectando...",
+                resultBadge: "COINCIDENCIA ENCONTRADA",
+                resultTitle: "¡Mejor plataforma seleccionada!",
+                platformTitle: "Club Autorizado",
+                platformStatus: "Ciclo de ganancia activo",
+                stat1Label: "Probabilidad de ganar:",
+                stat1Val: "98.2% (Muy alta)",
+                stat2Label: "Tu bono:",
+                stat2Val: "+250 FS + 150%",
+                timerLabel: "Tu bono expira en:",
+                btnCta: "RECLAMAR BONO Y JUGAR →",
+                footerLabel: "GANADORES EN VIVO CERCA DE TI",
+                wonIn: "ganó en",
+                currency: "€",
+                prefix: false
+            },
+            fr: {
+                title: "Maximisez l'IA en utilisant sa puissance de calcul pour analyser la meilleure offre",
+                desc: "Notre algorithme intelligent scanne les casinos actifs en temps réel. Il détecte les plateformes avec le taux de reversement le plus élevé et les meilleurs bonus.",
+                btnStart: "DÉMARRER LA RECHERCHE IA",
+                scanningTitle: "Analyse des serveurs...",
+                scanningSub: "Recherche du meilleur taux de gain, veuillez patienter...",
+                log1: "Détection de position...",
+                log2: "Vérification des taux de paiement actifs...",
+                log3: "Recherche de bonus exclusifs...",
+                log4: "Meilleure option trouvée ! Connexion...",
+                resultBadge: "CORRESPONDANCE TROUVÉE",
+                resultTitle: "Meilleure plateforme sélectionnée !",
+                platformTitle: "Club Licencié",
+                platformStatus: "Cycle de gain actif",
+                stat1Label: "Chances de gagner :",
+                stat1Val: "98.2% (Très élevées)",
+                stat2Label: "Votre bonus :",
+                stat2Val: "+250 FS + 150%",
+                timerLabel: "Votre bonus expire dans :",
+                btnCta: "RÉCLAMER LE BONUS & JOUER →",
+                footerLabel: "GAINS EN DIRECT PRÈS DE CHEZ VOUS",
+                wonIn: "a gagné à",
+                currency: "€",
+                prefix: false
             },
             pt: {
-                title: "PREDICTOR DE JOGOS IA",
-                desc: "Nossa IA rastreia onde jogadores perderam muito nas últimas 24h. O ciclo de pagamento é inevitável.",
-                ai_btn: "USAR ANÁLISE",
-                cta_btn: "ACESSAR PLATAFORMA",
-                timer_text: "Sinal válido por:",
-                footer: "Powered by Gemini Neural Network • v.4.2",
-                ai_prompt: "Você é analista. Brevemente (máx 25 palavras) em PORTUGUÊS diga: 'Alta probabilidade de ganho encontrada em uma plataforma devido a longas perdas de jogadores. Link gerado. Acesse pelo botão abaixo'.",
-                ai_thinking: "Analisando histórico...",
-                redirecting: "ACESSANDO..."
+                title: "Maximize o uso da IA utilizando o seu poder computacional para analisar a melhor oferta",
+                desc: "Nosso algoritmo inteligente analisa cassinos ativos em tempo real. Ele detecta as plataformas com a maior taxa de vitória e os melhores bônus.",
+                btnStart: "INICIAR BUSCA IA",
+                scanningTitle: "Analisando servidores...",
+                scanningSub: "Procurando a maior taxa de ganho, por favor aguarde...",
+                log1: "Detetando localização...",
+                log2: "Verificando pagamentos ativos...",
+                log3: "Procurando bónus exclusivos...",
+                log4: "Melhor opção encontrada! Conectando...",
+                resultBadge: "RESULTADO ENCONTRADO",
+                resultTitle: "Melhor plataforma selecionada!",
+                platformTitle: "Club Licenciado",
+                platformStatus: "Ciclo de ganhos ativo",
+                stat1Label: "Chance de ganhar:",
+                stat1Val: "98.2% (Muito alta)",
+                stat2Label: "O seu bónus:",
+                stat2Val: "+250 FS + 150%",
+                timerLabel: "O seu bónus expira em:",
+                btnCta: "RECLAMAR BÓNUS E JOGAR →",
+                footerLabel: "VENCEDORES EM DIRETO PERTO DE SI",
+                wonIn: "ganhou em",
+                currency: "€",
+                prefix: false
+            },
+            pl: {
+                title: "Wykorzystaj sztuczną inteligencję na maksimum, używając jej mocy obliczeniowej do analizy najlepszej oferty",
+                desc: "Nasz inteligentny algorytm skanuje aktywne kasyna w czasie rzeczywistym. Znajduje platformy o najwyższej stopie zwrotu i najlepszych bonusach.",
+                btnStart: "URUCHOM WYSZUKIWANIE AI",
+                scanningTitle: "Skanowanie serwerów...",
+                scanningSub: "Szukanie najwyższej stopy zwrotu, proszę czekać...",
+                log1: "Wykrywanie lokalizacji...",
+                log2: "Sprawdzanie wskaźników wypłat...",
+                log3: "Wyszukiwanie ekskluzywnych bonusów...",
+                log4: "Najlepsza opcja znaleziona! Łączenie...",
+                resultBadge: "DOPASOWANIE ZNALEZIONE",
+                resultTitle: "Najlepsza platforma wybrana!",
+                platformTitle: "Licencjonowany Klub",
+                platformStatus: "Aktywny cykl wygranych",
+                stat1Label: "Szansa na wygraną:",
+                stat1Val: "98.2% (Bardzo wysoka)",
+                stat2Label: "Twój bonus:",
+                stat2Val: "+250 FS + 150%",
+                timerLabel: "Twój bonus wygasa za:",
+                btnCta: "ODBIERZ BONUS I GRAJ →",
+                footerLabel: "WYGRANE NA ŻYWO W TWOJEJ OKOLICY",
+                wonIn: "wygrał w",
+                currency: "zł",
+                prefix: false
+            },
+            ro: {
+                title: "Folosește IA la maximum, utilizând puterea sa computațională pentru a analiza cea mai bună ofertă",
+                desc: "Algoritmul nostru inteligent scanează cazinourile active în timp real. Detectează platformele cu cea mai mare rată de câștig și cele mai bune bonusuri.",
+                btnStart: "PORNEȘTE CĂUTAREA IA",
+                scanningTitle: "Se scanează serverele...",
+                scanningSub: "Căutăm cea mai mare rată de câștig, vă rugăm să așteptați...",
+                log1: "Detectarea locației...",
+                log2: "Verificarea plăților active...",
+                log3: "Căutarea de bonusuri exclusive...",
+                log4: "Cea mai bună opțiune găsită! Se conectează...",
+                resultBadge: "POTRIVIRE GĂSITĂ",
+                resultTitle: "Cea mai bună platformă selectată!",
+                platformTitle: "Club Licențiat",
+                platformStatus: "Ciclu de câștig activ",
+                stat1Label: "Șanse de câștig:",
+                stat1Val: "98.2% (Foarte mari)",
+                stat2Label: "Bonusul tău:",
+                stat2Val: "+250 FS + 150%",
+                timerLabel: "Bonusul tău expiră în:",
+                btnCta: "REVENDICĂ BONUSUL ȘI JOACĂ →",
+                footerLabel: "CÂȘTIGURI LIVE LÂNGĂ TINE",
+                wonIn: "a câștigat la",
+                currency: "RON",
+                prefix: false
+            },
+            cs: {
+                title: "Využijte AI na maximum – zapojte její výpočetní výkon k analýze té nejlepší nabídky",
+                desc: "Náš chytrý algoritmus skenuje aktivní kasina v reálném čase. Vyhledává platformy s nejvyšší výherností a nejlepšími bonusy.",
+                btnStart: "SPUSTIT AI VYHLEDÁVÁNÍ",
+                scanningTitle: "Skenování serverů...",
+                scanningSub: "Hledání nejvyšší výhernosti, čekejte prosím...",
+                log1: "Zjišťování polohy...",
+                log2: "Kontrola aktivních výplat...",
+                log3: "Hledání exkluzivních bonusů...",
+                log4: "Nejlepší možnost nalezena! Připojování...",
+                resultBadge: "NALEZENA SHODA",
+                resultTitle: "Nejlepší platforma vybrána!",
+                platformTitle: "Licencovaný Klub",
+                platformStatus: "Aktivní výplatní cyklus",
+                stat1Label: "Šance na výhru:",
+                stat1Val: "98.2% (Velmi vysoká)",
+                stat2Label: "Váš bonus:",
+                stat2Val: "+250 FS + 150%",
+                timerLabel: "Váš bonus vyprší za:",
+                btnCta: "ZÍSKAT BONUS A HRÁT →",
+                footerLabel: "AKTUÁLNÍ VÝHRY VE VAŠEM OKOLÍ",
+                wonIn: "vyhrál v",
+                currency: "Kč",
+                prefix: false
+            },
+            sk: {
+                title: "Využite AI na maximum a zapojte jej výpočtovú silu na analýzu tej najlepšej ponuky",
+                desc: "Náš inteligentný algoritmus skenuje aktívne kasína v reálnom čase. Vyhľadáva platformy s najvyššou výhernosťou a najlepšími bonusmi.",
+                btnStart: "SPUSTIŤ AI VYHĽADÁVANIE",
+                scanningTitle: "Skenování serverov...",
+                scanningSub: "Hľadanie najvyššej výhernosti, čakajte prosím...",
+                log1: "Zisťovanie polohy...",
+                log2: "Kontrola aktívnych výplat...",
+                log3: "Hledanie exkluzivních bonusů...",
+                log4: "Najlepšia možnosť nájdená! Pripájanie...",
+                resultBadge: "NAŠLA SA ZHODA",
+                resultTitle: "Najlepšia platforma vybraná!",
+                platformTitle: "Licencovaný Klub",
+                platformStatus: "Aktívny výherný cyklus",
+                stat1Label: "Šanca na výhru:",
+                stat1Val: "98.2% (Veľmi vysoká)",
+                stat2Label: "Váš bonus:",
+                stat2Val: "+250 FS + 150%",
+                timerLabel: "Váš bonus vyprší o:",
+                btnCta: "ZÍSKAŤ BONUS A HRAŤ →",
+                footerLabel: "AKTUÁLNE VÝHRY VO VAŠOM OKOLÍ",
+                wonIn: "vyhral v",
+                currency: "€",
+                prefix: false
+            },
+            hu: {
+                title: "Használd ki az AI-t maximálisan, kihasználva számítási kapacitását a legjobb ajánlat elemzéséhez",
+                desc: "Okos algoritmusunk valós időben pásztázza az aktív kaszinókat. Megkeresi a legmagasabb kifizetési rátával és a legjobb bónuszokkal rendelkező platformokat.",
+                btnStart: "AI KERESÉS INDÍTÁSA",
+                scanningTitle: "Szerverek pásztázása...",
+                scanningSub: "A legmagasabb nyerési arány keresése, kérjük várjon...",
+                log1: "Helyzet meghatározása...",
+                log2: "Aktív kifizetések ellenőrzése...",
+                log3: "Exkluzív bónuszok keresése...",
+                log4: "Legjobb lehetőség megtalálva! Csatlakozás...",
+                resultBadge: "TALÁLAT MEGVAN",
+                resultTitle: "A legjobb platform kiválasztva!",
+                platformTitle: "Engedélyezett Klub",
+                platformStatus: "Aktív nyerési ciklus",
+                stat1Label: "Nyerési esély:",
+                stat1Val: "98.2% (Nagyon magas)",
+                stat2Label: "Bónuszod:",
+                stat2Val: "+250 FS + 150%",
+                timerLabel: "A bónuszod lejár ennyi idő múlva:",
+                btnCta: "KÉRÉS A BÓNUSZT ÉS JÁTÉK →",
+                footerLabel: "ÉLŐ NYEREMÉNYEK A KÖZELBEN",
+                wonIn: "nyert a",
+                currency: "Ft",
+                prefix: false
+            },
+            el: {
+                title: "Χρησιμοποιήστε την AI στο μέγιστο, αξιοποιώντας την υπολογιστική της ισχύ για την ανάλυση της καλύτερης προσφοράς",
+                desc: "Ο έξυπνος αλγόριθμός μας σαρώνει ενεργά καζίνο σε πραγματικό χρόνο. Εντοπίζει τις πλατφόρμες με το υψηλότερο ποσοστό κέρδους και τα καλύτερα μπόνους.",
+                btnStart: "ΕΝΑΡΞΗ ΑΝΑΖΗΤΗΣΗΣ AI",
+                scanningTitle: "Σάρωση διακομιστών...",
+                scanningSub: "Αναζήτηση για το υψηλότερο ποσοστό κέρδους, παρακαλώ περιμένετε...",
+                log1: "Εντοπισμός τοποθεσίας...",
+                log2: "Έλεγχος ενεργών πληρωμών...",
+                log3: "Αναζήτηση για αποκλειστικά μπόνους...",
+                log4: "Βρέθηκε η καλύτερη επιλογή! Σύνδεση...",
+                resultBadge: "ΒΡΕΘΗΚΕ ΣΥΜΒΑΤΟΤΗΤΑ",
+                resultTitle: "Η καλύτερη πλατφόρμα επιλέχθηκε!",
+                platformTitle: "Αδειοδοτημένο Κλαμπ",
+                platformStatus: "Ενεργός κύκλος κερδών",
+                stat1Label: "Πιθανότητα νίκης:",
+                stat1Val: "98.2% (Πολύ υψηλή)",
+                stat2Label: "Το μπόνους σας:",
+                stat2Val: "+250 FS + 150%",
+                timerLabel: "Το μπόνους σας λήγει σε:",
+                btnCta: "ΔΙΕΚΔΙΚΗΣΗ ΜΠΟΝΟΥΣ & ΠΑΙΞΕ →",
+                footerLabel: "ΖΩΝΤΑΝΑ ΚΕΡΔΗ ΚΟΝΤΑ ΣΑΣ",
+                wonIn: "κέρδισε στο",
+                currency: "€",
+                prefix: false
+            },
+            hr: {
+                title: "Iskoristi AI na maksimum, koristeći njegove računalne snage za analizu najbolje ponude",
+                desc: "Naš pametni algoritam skenira aktivna kasina u stvarnom vremenu. Pronalazi platforme s najvećom stopom povrata i najboljim bonusima.",
+                btnStart: "POKRENI AI PRETRAGU",
+                scanningTitle: "Skeniranje poslužitelja...",
+                scanningSub: "Traženje najveće stope povrata, molimo pričekajte...",
+                log1: "Detektiranje lokacije...",
+                log2: "Provjera isplata u tijeku...",
+                log3: "Potraga za ekskluzivnim bonusima...",
+                log4: "Najbolja opcija pronađena! Povezivanje...",
+                resultBadge: "PRONAĐENO PODUDARANJE",
+                resultTitle: "Najbolja platforma odabrana!",
+                platformTitle: "Licencirani Klub",
+                platformStatus: "Aktivni ciklus dobitaka",
+                stat1Label: "Šansa za pobjedu:",
+                stat1Val: "98.2% (Vrlo visoka)",
+                stat2Label: "Tvoj bonus:",
+                stat2Val: "+250 FS + 150%",
+                timerLabel: "Tvoj bonus istječe za:",
+                btnCta: "PREUZMI BONUS I IGRAJ →",
+                footerLabel: "ISPLATE UŽIVO U VAŠOJ BLIZINI",
+                wonIn: "osvojio u",
+                currency: "€",
+                prefix: false
+            },
+            sr: {
+                title: "Iskoristi AI na maksimum, koristeći njegove računske snage za analizu najbolje ponude",
+                desc: "Naš pametni algoritam skenira aktivne kazine u realnom vremenu. Pronalazi platforme sa najvećom stopom povrata i najboljim bonusima.",
+                btnStart: "POKRENI AI PRETRAGU",
+                scanningTitle: "Skeniranje servera...",
+                scanningSub: "Traženje najveće stope povrata, molimo sačekajte...",
+                log1: "Detektovanje lokacije...",
+                log2: "Provera isplata u toku...",
+                log3: "Potraga za ekskluzivnim bonusima...",
+                log4: "Najbolja opcija pronađena! Povezivanje...",
+                resultBadge: "PRONAĐENO PODUDARANJE",
+                resultTitle: "Najbolja platforma izabrana!",
+                platformTitle: "Licencirani Klub",
+                platformStatus: "Aktivni ciklus dobitaka",
+                stat1Label: "Šansa za pobedu:",
+                stat1Val: "98.2% (Veoma visoka)",
+                stat2Label: "Tvoj bonus:",
+                stat2Val: "+250 FS + 150%",
+                timerLabel: "Tvoj bonus ističe za:",
+                btnCta: "PREUZMI BONUS I IGRAJ →",
+                footerLabel: "ISPLATE UŽIVO U TVOJOJ BLIZINI",
+                wonIn: "osvojio u",
+                currency: "RSD",
+                prefix: false
+            },
+            ar: {
+                title: "استخدم الذكاء الاصطناعي إلى أقصى حد، مستفيدًا من قدراته الحسابية لتحليل أفضل عرض",
+                desc: "يقوم خوارزميتنا الذكية بفحص الكازينوهات النشطة في الوقت الفعلي. تعثر على المنصات ذات أعلى معدل عائد وأفضل المكافآت.",
+                btnStart: "بدء بحث الذكاء الاصطناعي",
+                scanningTitle: "جاري فحص الخوادم...",
+                scanningSub: "البحث عن أعلى معدل فوز، يرجى الانتظار...",
+                log1: "تحديد الموقع الحالي...",
+                log2: "التحقق من معدلات الدفع...",
+                log3: "البحث عن مكافآت حصرية...",
+                log4: "تم العثور على الخيار الأفضل! جاري الاتصال...",
+                resultBadge: "تم العثور على تطابق",
+                resultTitle: "تم اختيار أفضل منصة بنجاح!",
+                platformTitle: "النادي المرخص",
+                platformStatus: "دورة المكاسب النشطة",
+                stat1Label: "فرصة الفوز:",
+                stat1Val: "98.2% (عالية جداً)",
+                stat2Label: "مكافأتك:",
+                stat2Val: "+250 دورة مجانية + 150%",
+                timerLabel: "ينتهي صلاحية عرضك خلال:",
+                btnCta: "احصل على المكافأة والعب الآن ←",
+                footerLabel: "الأرباح المباشرة بالقرب منك",
+                wonIn: "ربح في",
+                currency: "$",
+                prefix: true
             }
         };
 
-        // Auto Language Detection
-        let userLang = navigator.language || navigator.userLanguage; 
-        userLang = userLang.substr(0, 2).toLowerCase(); 
-        if (!translations[userLang]) userLang = 'en';
-        const currentLang = translations[userLang];
-
-        // Apply Translations
-        document.addEventListener("DOMContentLoaded", () => {
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (currentLang[key]) el.innerText = currentLang[key];
-            });
-        });
-
-        // Redirect Logic
-        function handleRedirect() {
-            const btn = document.querySelector('.btn span');
-            if(btn) btn.innerText = currentLang.redirecting;
-            setTimeout(() => window.location.href = OFFER_LINK, 800);
-        }
-
-        // --- CORE AI LOGIC ---
-        async function scanWithAI(btn) {
-            const outputBox = document.getElementById('ai-output');
-            const hiddenOffer = document.getElementById('hidden-offer-container');
-            
-            // 1. UI Changes on Start
-            outputBox.classList.add('visible');
-            outputBox.innerText = currentLang.ai_thinking;
-            btn.disabled = true;
-            btn.style.opacity = "0.5";
-            btn.style.cursor = "default";
-
-            try {
-                // Generate a random delay between 5 and 10 seconds (5000ms - 10000ms)
-                const delay = Math.floor(Math.random() * 5000) + 5000;
-
-                // 2. Call Gemini and Wait for Delay
-                const [response] = await Promise.all([
-                    fetch(
-                        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,
-                        {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                contents: [{ parts: [{ text: currentLang.ai_prompt }] }]
-                            })
-                        }
-                    ),
-                    new Promise(resolve => setTimeout(resolve, delay)) // Wait for random delay
-                ]);
-
-                const data = await response.json();
-                let aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Opportunity found. Link generated below.";
-
-                // 3. Typing Effect
-                outputBox.innerText = "";
-                outputBox.style.color = "#4ade80"; // Green Success Text
-                outputBox.style.fontWeight = "bold";
-                
-                let i = 0;
-                outputBox.classList.add('typing-cursor');
-                
-                const typeWriter = setInterval(() => {
-                    if (i < aiText.length) {
-                        outputBox.innerText += aiText.charAt(i);
-                        i++;
-                    } else {
-                        // 4. WHEN TYPING IS DONE -> SHOW REGISTER BUTTON
-                        clearInterval(typeWriter);
-                        outputBox.classList.remove('typing-cursor');
-                        
-                        // Reveal the hidden offer with animation
-                        hiddenOffer.classList.add('show');
-                        
-                        // Start Timer only after offer is shown
-                        startTimer();
-                    }
-                }, 40); // Typing speed
-
-            } catch (error) {
-                console.error(error);
-                outputBox.innerText = "Connection error. Access link provided below.";
-                hiddenOffer.classList.add('show'); // Show button anyway on error
+        let audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
         }
 
-        function startTimer() {
-            let time = 300; // 5 mins
-            const countdownEl = document.getElementById('countdown');
-            setInterval(() => {
-                if (time <= 0) return;
-                const m = Math.floor(time / 60);
-                let s = time % 60;
-                s = s < 10 ? '0' + s : s;
-                countdownEl.innerText = `0${m}:${s}`;
-                time--;
+        function playBeep(freq, type, duration) {
+            try {
+                initAudio();
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                
+                gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                // Игнорируем в случае блокировок встроенных браузеров
+            }
+        }
+
+        let scanHumInterval = null;
+        function startScanTicks() {
+            scanHumInterval = setInterval(() => {
+                playBeep(250 + Math.random() * 50, 'sine', 0.1);
+            }, 200);
+        }
+
+        function stopScanTicks() {
+            if (scanHumInterval) clearInterval(scanHumInterval);
+            // Победный приятный звон
+            setTimeout(() => playBeep(523, 'triangle', 0.2), 0);
+            setTimeout(() => playBeep(659, 'triangle', 0.2), 80);
+            setTimeout(() => playBeep(784, 'triangle', 0.3), 160);
+        }
+
+        const langSelector = document.getElementById('lang-selector');
+        let currentLang = 'en';
+
+        // Автоматическое определение языка устройства
+        function detectUserLanguage() {
+            const userLang = (navigator.language || navigator.userLanguage || 'en').substring(0, 2).toLowerCase();
+            if (TRANSLATIONS[userLang]) {
+                return userLang;
+            }
+            return 'en'; // дефолт
+        }
+
+        // Функция обновления текстового наполнения страницы под выбранный язык
+        function updateLanguageUI(lang) {
+            currentLang = lang;
+            langSelector.value = lang;
+            
+            const dict = TRANSLATIONS[lang];
+            
+            // Направление текста для арабского языка
+            if (lang === 'ar') {
+                document.documentElement.dir = 'rtl';
+                document.getElementById('lang-selector').style.backgroundPosition = "left 8px center";
+            } else {
+                document.documentElement.dir = 'ltr';
+                document.getElementById('lang-selector').style.backgroundPosition = "right 8px center";
+            }
+
+            // Массовое обновление статических текстов
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) {
+                    el.innerText = dict[key];
+                }
+            });
+
+            // Локализация второстепенных элементов
+            document.getElementById('live-wins-header').innerHTML = `
+                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-1.5 active-pulse-dot"></span>
+                ${dict.footerLabel}
+            `;
+
+            // Обновляем шапку
+            document.getElementById('header-logo-text').innerText = lang === 'ar' ? 'ماسح الذكاء الاصطناعي v6.0' : 'AI SCANNER v6.0';
+            document.getElementById('stat-info-title-1').innerText = lang === 'ru' ? 'Провайдеры' : (lang === 'uk' ? 'Провайдери' : (lang === 'ar' ? 'المزودين' : 'Providers'));
+            document.getElementById('stat-info-title-2').innerText = lang === 'ru' ? 'Шанс отдачи' : (lang === 'uk' ? 'Шанс віддачі' : (lang === 'ar' ? 'معدل العائد' : 'Win-Rate'));
+        }
+
+        // Изменение языка через селектор вручную
+        langSelector.addEventListener('change', (e) => {
+            updateLanguageUI(e.target.value);
+            playBeep(440, 'sine', 0.08);
+        });
+
+        const screenIntro = document.getElementById('screen-intro');
+        const screenScanning = document.getElementById('screen-scanning');
+        const screenResult = document.getElementById('screen-result');
+        const btnStart = document.getElementById('btn-start');
+        const ctaLink = document.getElementById('cta-link');
+        
+        const scanPercentage = document.getElementById('scan-percentage');
+        const progressBar = document.getElementById('progress-bar');
+        
+        const log1 = document.getElementById('log-line-1');
+        const log2 = document.getElementById('log-line-2');
+        const log3 = document.getElementById('log-line-3');
+
+        // Клик по СТАРТУ
+        btnStart.addEventListener('click', () => {
+            initAudio();
+            playBeep(440, 'sine', 0.08);
+            
+            screenIntro.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => {
+                screenIntro.classList.add('hidden');
+                screenScanning.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    screenScanning.classList.remove('opacity-0', 'scale-95');
+                    runScanning();
+                }, 50);
+            }, 300);
+        });
+
+        function runScanning() {
+            let progress = 0;
+            const dict = TRANSLATIONS[currentLang];
+            const activeLogs = [dict.log1, dict.log2, dict.log3, dict.log4];
+            let logIndex = 0;
+            
+            startScanTicks();
+
+            const scanInterval = setInterval(() => {
+                if (progress < 100) {
+                    progress += Math.floor(Math.random() * 4) + 1;
+                    if (progress > 100) progress = 100;
+                    
+                    scanPercentage.innerText = progress + '%';
+                    progressBar.style.width = progress + '%';
+
+                    // Шаг вывода текстовых логов на основе прогресса
+                    const nextLogThreshold = Math.floor((logIndex + 1) * (100 / activeLogs.length));
+                    if (progress >= nextLogThreshold && logIndex < activeLogs.length) {
+                        log1.innerText = log2.innerText;
+                        log2.innerText = log3.innerText;
+                        log3.innerText = "> " + activeLogs[logIndex];
+                        logIndex++;
+                    }
+                } else {
+                    clearInterval(scanInterval);
+                    stopScanTicks();
+                    finishScanning();
+                }
+            }, 80);
+        }
+
+        function finishScanning() {
+            setTimeout(() => {
+                screenScanning.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    screenScanning.classList.add('hidden');
+                    screenResult.classList.remove('hidden');
+                    startCountdown(); 
+                    setTimeout(() => {
+                        screenResult.classList.remove('opacity-0', 'scale-95');
+                    }, 50);
+                }, 300);
+            }, 400);
+        }
+
+        // Таймер обратного отсчета
+        function startCountdown() {
+            let minutes = 14;
+            let seconds = 59;
+            const timerEl = document.getElementById('countdown-timer');
+            
+            const timerInterval = setInterval(() => {
+                if (seconds > 0) {
+                    seconds--;
+                } else {
+                    if (minutes > 0) {
+                        minutes--;
+                        seconds = 59;
+                    } else {
+                        clearInterval(timerInterval);
+                    }
+                }
+                
+                const minStr = minutes < 10 ? '0' + minutes : minutes;
+                const secStr = seconds < 10 ? '0' + seconds : seconds;
+                timerEl.innerText = `${minStr}:${secStr}`;
             }, 1000);
         }
+
+        // Генератор живых побед с переведенной валютой и структурой
+        const userNames = [
+            "Alex M.", "Dmitry K.", "Nikita S.", "John D.", "Emma W.", "Marco R.", "Hans B.", "Pierre L.",
+            "Ivan P.", "Vlad S.", "Jan P.", "Lucia G.", "Marta S.", "Sato Y.", "Carlos E.", "Ali F."
+        ];
+        const winValues = [
+            250, 480, 120, 890, 310, 550, 1500, 720, 180, 430, 950, 640
+        ];
+        const popularSlots = [
+            "Gates of Olympus", "Sweet Bonanza", "Sugar Rush", "Plinko", "Book of Dead", "The Dog House"
+        ];
+
+        const liveContainer = document.getElementById('live-wins-container');
+
+        // Красивое форматирование валюты в зависимости от страны
+        function formatVal(value, lang) {
+            const dict = TRANSLATIONS[lang];
+            let rawVal = Math.floor(value * (lang === 'ru' ? 90 : (lang === 'uk' ? 40 : (lang === 'pl' ? 4 : (lang === 'cs' ? 24 : (lang === 'hu' ? 380 : 1))))));
+            
+            // Красивое разделение тысяч
+            let formatted = rawVal.toLocaleString('en-US');
+
+            if (dict.prefix) {
+                return dict.currency + formatted;
+            } else {
+                return formatted + " " + dict.currency;
+            }
+        }
+
+        function generateWinLog() {
+            const dict = TRANSLATIONS[currentLang];
+            const name = userNames[Math.floor(Math.random() * userNames.length)];
+            const slot = popularSlots[Math.floor(Math.random() * popularSlots.length)];
+            const rawAmount = winValues[Math.floor(Math.random() * winValues.length)];
+            const formattedAmount = formatVal(rawAmount, currentLang);
+            
+            const item = document.createElement('div');
+            item.className = "flex items-center justify-between text-[11px] font-mono py-1 border-b border-slate-900/40 text-slate-300 opacity-0 translate-y-2 transition-all duration-300";
+            item.innerHTML = `
+                <div class="flex items-center space-x-1">
+                    <span class="text-slate-400 font-bold">${name}</span>
+                    <span class="text-slate-600">${dict.wonIn}</span>
+                    <span class="text-emerald-400">${slot}</span>
+                </div>
+                <div class="text-emerald-400 font-extrabold">+${formattedAmount}</div>
+            `;
+            
+            liveContainer.prepend(item);
+            
+            // Плавный влет строки
+            setTimeout(() => {
+                item.classList.remove('opacity-0', 'translate-y-2');
+            }, 50);
+
+            // Держим не более 2 логов в футере для чистоты на мобильных
+            if (liveContainer.children.length > 2) {
+                liveContainer.lastElementChild.remove();
+            }
+        }
+
+        // Запуск живых побед на старте
+        setInterval(generateWinLog, 4000 + Math.random() * 2500);
+        
+        // Установка стартового языка
+        const initialLang = detectUserLanguage();
+        updateLanguageUI(initialLang);
+
+        // Первая генерация лога
+        generateWinLog();
+        setTimeout(generateWinLog, 1500);
+
+        // Установка целевой ссылки
+        ctaLink.href = TARGET_URL;
     </script>
 </body>
-
 </html>
